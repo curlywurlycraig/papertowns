@@ -22,14 +22,15 @@ def scrape_top_papertowns_posts():
             latitude, longitude = lat_and_long
 
         # check to see if a post already exists with this submission url
-        existing = session.query(Town).filter(Town.submission_url==submission.permalink).count()
+        encoded_permalink = submission.permalink.encode('utf-8')
+        existing = session.query(Town).filter(Town.submission_url==encoded_permalink).count()
         if existing > 0:
             continue
 
         # create the new entry
         town = Town(title = encoded_title,
                     image_url = submission.url,
-                    submission_url = submission.permalink,
+                    submission_url = encoded_permalink,
                     longitude = longitude,
                     latitude = latitude)
         session.add(town)

@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import Column, Integer, String, Float
+from sqlalchemy import Column, Integer, String, Float, Unicode
 
 Base = declarative_base()
 
@@ -13,9 +13,9 @@ session = Session()
 class Town(Base):
     __tablename__ = 'towns'
 
-    title = Column(String)
+    title = Column(Unicode)
     image_url = Column(String, primary_key=True)
-    submission_url = Column(String)
+    submission_url = Column(Unicode)
     latitude = Column(Float)
     longitude = Column(Float)
 
