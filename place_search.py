@@ -3,11 +3,11 @@ from secrets import GOOGLE_API_KEY
 from nltk import ne_chunk, pos_tag
 from nltk.tokenize import word_tokenize
 
-TEXT_SEARCH_URL = 'https://maps.googleapis.com/maps/api/place/textsearch/json?key=' + GOOGLE_API_KEY
+TEXT_SEARCH_URL = u'https://maps.googleapis.com/maps/api/place/textsearch/json?key=' + GOOGLE_API_KEY
 
 # returns a pair: lat and long
 def get_longitude_and_latitude(place_name):
-    request_url = TEXT_SEARCH_URL + '&query={}'.format(place_name)
+    request_url = TEXT_SEARCH_URL + u'&query={}'.format(place_name)
     response = requests.get(request_url).json()
 
     result = response['results'][0]['geometry']['location']
@@ -29,9 +29,10 @@ def place_name_from_reddit_title(title):
 
 def lat_long_from_reddit_title(title):
     # determine the place name from the title
-    print "Title: {}".format(title)
+
+    print u"Title: {}".format(title)
     place_name = place_name_from_reddit_title(title)
-    print "Found place name: {}\nfrom title {}".format(place_name, title)
+    print u"Found place name: {}\nfrom title {}".format(place_name, title)
 
     # return the lat and long as returned from gmaps api
     if place_name is None:

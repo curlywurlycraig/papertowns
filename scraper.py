@@ -13,24 +13,21 @@ def scrape_top_papertowns_posts():
     submissions = praw_client.get_subreddit('papertowns').get_hot(limit=SCRAPER_LIMIT)
 
     for submission in submissions:
-        encoded_title = submission.title.encode('utf-8')
-
-        lat_and_long = lat_long_from_reddit_title(encoded_title)
+        lat_and_long = lat_long_from_reddit_title(submission.title)
         if lat_and_long is None:
             continue
         else:
             latitude, longitude = lat_and_long
 
         # check to see if a post already exists with this submission url
-        encoded_permalink = submission.permalink.encode('utf-8')
-        existing = session.query(Town).filter(Town.submission_url==encoded_permalink).count()
+        existing = session.query(Town).filter(Town.submission_url==submission.permalink).count()
         if existing > 0:
             continue
 
         # create the new entry
-        town = Town(title = encoded_title,
+        town = Town(title = submission.title,
                     image_url = submission.url,
-                    submission_url = encoded_permalink,
+                    submission_url = submission.permalink,
                     longitude = longitude,
                     latitude = latitude)
         session.add(town)
